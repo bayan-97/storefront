@@ -20,7 +20,8 @@ redux useing dispatch active and make action on the catogry
 ### product.js 
 redux  useing to  to show the product 
 ### header.js and  footer.js 
- 
+ ### simplecart.js 
+redux  useing to  to show the product and add to cart and increase the count and decrease the inStock propity
 
 
 

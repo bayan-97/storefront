@@ -4,7 +4,7 @@ const initialState = {
 		{ name: 'food', displayName: 'Food' },
 		{ name: 'clothing', displayName: 'Clothing' }
 	],
-	activecat: 'electronics'
+	activecat: ''
 };
 //Reducer
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -13,7 +13,8 @@ export default (state = initialState, action) => {
 	console.log('STATE??', state, 'Action', action, payload);
 	switch (type) {
 		case 'CHANGE':
-			let activecat = 'electronics';
+			state.activecat = payload;
+			let activecat = payload;
 			console.log('act', activecat);
 			return { ...state, activecat };
 		default:

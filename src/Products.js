@@ -1,4 +1,6 @@
 import { connect } from 'react-redux';
+import { addtocart } from './store/simplecart';
+import { decremenr } from './store/Products';
 
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
@@ -16,6 +18,9 @@ const useStyles = makeStyles({
 	},
 	Card: {
 		maxWidth: 345
+	},
+	title: {
+		maxWidth: 345
 	}
 });
 
@@ -26,6 +31,8 @@ const SpecifCatogry = (props) => {
 		<section className={classes.root}>
 			{props.prodectsDepCatogry.map((prodect) => {
 				return (
+                <>
+               
 					<Card className={classes.Card}>
 						<CardActionArea>
 							<CardMedia
@@ -37,19 +44,34 @@ const SpecifCatogry = (props) => {
 							/>
 							<CardContent>
 								<Typography gutterBottom variant="h5" component="h2">
+									{prodect.inStock}
+								</Typography>
+                                <Typography gutterBottom variant="h5" component="h2">
+									{prodect.price + "JD"}
+								</Typography>
+
+								<Typography gutterBottom variant="h5" component="h2">
 									{prodect.name}
 								</Typography>
 							</CardContent>
 						</CardActionArea>
 						<CardActions>
-							<Button size="small" color="primary">
-								Share
+							<Button
+								size="small"
+								color="primary"
+								onClick={() => {
+									props.addtocart(prodect.name);
+									props.decremenr(prodect.name);
+								}}
+							>
+								add
 							</Button>
 							<Button size="small" color="primary">
 								Learn More
 							</Button>
 						</CardActions>
 					</Card>
+                    </>
 				);
 			})}
 		</section>
@@ -57,7 +79,11 @@ const SpecifCatogry = (props) => {
 };
 
 const mapStateToProps = (state) => {
-	return { prodectsDepCatogry: state.products.prodectsDepCatogry };
+	console.log(`prodcartee88`, state);
+	return {
+		prodectsDepCatogry: state.products.prodectsDepCatogry,
+		active: state.categories.activecat
+	};
 };
-
-export default connect(mapStateToProps)(SpecifCatogry);
+const mapDispatchToProps = { addtocart, decremenr };
+export default connect(mapStateToProps, mapDispatchToProps)(SpecifCatogry);

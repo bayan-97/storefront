@@ -51,64 +51,50 @@ const initialState = {
 			image: 'https://toppng.com/uploads/preview/bread-png-image-loaf-of-bread-11563103187ssm8yazedr.png'
 		}
 	],
-	prodectsDepCatogry: []
+	cartLists: [],
+	count: 0
 };
 
 //Reducer
 // eslint-disable-next-line import/no-anonymous-default-export
 // eslint-disable-next-line import/no-anonymous-default-export
 export default (state = initialState, action) => {
-	let prodectsDepCatogry;
 	const { type, payload } = action;
 
 	console.log('in produrrrct ACTION???22', action, state);
+	let count;
 	// console.log('maleeeeerrk', payload);
 
 	switch (type) {
-		case 'CHANGE':
-			let catorgyName = payload;
-			prodectsDepCatogry = initialState.products.filter((product) => {
-				if (product.category === catorgyName) {
-					return product;
-				}
-			});
-			// console.log('nn', catorgyName, prodectsDepCatogry);
-			// console.log('DISPLAY PRODS', productsToDisplay);
-			return { ...state, prodectsDepCatogry };
-		case 'DEC':
-			let catorgyName2 = payload;
-			let prod = initialState.products.filter((product) => {
-				if (product.name === catorgyName2) {
+		case 'ADD':
+			let productName = payload;
+			count = state.count + 1;
+
+			let cartLists = initialState.products.filter((product) => {
+				console.log('vvvvb', product.name === productName && !state.cartLists.includes(product));
+				if (product.name === productName && !state.cartLists.includes(product)) {
 					product.inStock--;
 					return product;
 				}
 			});
-			console.log('bbb', prod);
-			prodectsDepCatogry = initialState.products.filter((product) => {
-				if (product.category === prod[0].category) {
-					return product;
-				}
+
+			state.cartLists.forEach((element) => {
+				cartLists.push(element);
 			});
 
-			console.log('nn', prodectsDepCatogry);
+			// console.log('nn', catorgyName, prodectsDepCatogry);
 			// console.log('DISPLAY PRODS', productsToDisplay);
-			return { ...state, prodectsDepCatogry };
+			return { count, cartLists };
+
 		default:
 			return state;
 	}
 };
 
-export const changeActive = (name) => {
+export const addtocart = (name) => {
 	console.log('vvv', name);
 	return {
-		type: 'CHANGE',
-		payload: name
-	};
-};
-export const decremenr = (name) => {
-	console.log('vvv', name);
-	return {
-		type: 'DEC',
+		type: 'ADD',
 		payload: name
 	};
 };
