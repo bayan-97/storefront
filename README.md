@@ -22,11 +22,11 @@ redux  useing to  to show the product
 ### header.js and  footer.js 
  ### simplecart.js 
 redux  useing to  to show the product and add to cart and increase the count and decrease the inStock propity
-
-
+### store.js
+have the state and actiones
 
 
 
 
 UML Diagram
-![](lab34url.PNG)
+![](lab36url.PNG)
