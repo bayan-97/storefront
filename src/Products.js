@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import { addtocart } from './store/simplecart';
-import { decremenr } from './store/Products';
+import { getRemoteData3} from './store/simplecart';
+import { decremenr,updateproducteData } from './store/Products';
 
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
@@ -29,11 +29,13 @@ const SpecifCatogry = (props) => {
 
 	return (
 		<section className={classes.root}>
-			{props.prodectsDepCatogry.map((prodect) => {
+			{console.log('propsssddgg',props)}
+			
+			{props.prodectsDepCatogry.prodectsDepCatogry.map((prodect) => {
 				return (
                 <>
                
-					<Card className={classes.Card}>
+					<Card key={prodect._id} className={classes.Card}>
 						<CardActionArea>
 							<CardMedia
 								component="img"
@@ -60,8 +62,8 @@ const SpecifCatogry = (props) => {
 								size="small"
 								color="primary"
 								onClick={() => {
-									props.addtocart(prodect.name);
-									props.decremenr(prodect.name);
+									props.getRemoteData3(prodect._id);
+									props.updateproducteData(prodect._id);
 								}}
 							>
 								add
@@ -81,9 +83,9 @@ const SpecifCatogry = (props) => {
 const mapStateToProps = (state) => {
 	console.log(`prodcartee88`, state);
 	return {
-		prodectsDepCatogry: state.products.prodectsDepCatogry,
+		prodectsDepCatogry: state.products,
 		active: state.categories.activecat
 	};
 };
-const mapDispatchToProps = { addtocart, decremenr };
+const mapDispatchToProps = { getRemoteData3, decremenr ,updateproducteData};
 export default connect(mapStateToProps, mapDispatchToProps)(SpecifCatogry);

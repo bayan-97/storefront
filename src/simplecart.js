@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { changeActive } from './store/categories';
+// import { changeActive } from './store/categories';
 // import ListItemLink from '@material-ui/core/ListItemLink';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
@@ -51,8 +51,8 @@ const SpecifCatogry2 = (props) => {
             <List className={classes.root2}  color="primary"  component="nav"    >
 				{props.cartLists.map((catogry) => {
                     return (
-            <ListItem >
-             <ListItemText  className={classes.inline} primary={catogry.name}/>
+            <ListItem key= {catogry.name}>
+             <ListItemText className={classes.inline} primary={catogry.name}/>
            </ListItem>
 					);
 				})}
@@ -68,7 +68,7 @@ const mapStateToProps = (state) => {
 	console.log('cart', state.cartlists.cartLists.length);
 	return { cartLists: state.cartlists.cartLists };
 };
-const mapDispatchToProps = { changeActive };
+// const mapDispatchToProps = { changeActive };
 
 /*
 you might also see it in this format 
@@ -82,4 +82,4 @@ const mapDispatchToProps = (dispatch)=>{
 }
 */
 
-export default connect(mapStateToProps, mapDispatchToProps)(SpecifCatogry2);
+export default connect(mapStateToProps)(SpecifCatogry2);

@@ -1,5 +1,7 @@
 import React from 'react';
+import { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { getRemoteData } from './store/categories';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -39,7 +41,8 @@ function Header(props) {
 	);
 }
 const mapStateToProps = (state) => {
-	console.log('cart', state.cartlists.cartLists.length);
+	console.log('carsssst', state);
 	return { count: state.cartlists.count };
 };
+
 export default connect(mapStateToProps)(Header);
