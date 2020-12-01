@@ -1,59 +1,10 @@
+import superagent from 'superagent';
+
 const initialState = {
-	products: [
-		{
-			name: 'TV',
-			category: 'electronics',
-			price: 699.0,
-			inStock: 5,
-			image: 'https://cdn.pixabay.com/photo/2018/12/22/03/27/smart-tv-3889141_960_720.png'
-		},
-		{
-			name: 'Radio',
-			category: 'electronics',
-			price: 99.0,
-			inStock: 15,
-			image: 'https://pluspng.com/img-png/radio-hd-png-radio-picture-png-image-500.png'
-		},
-		{
-			name: 'Shirt',
-			category: 'clothing',
-			price: 9.0,
-			inStock: 25,
-			image: 'https://pngimg.com/uploads/dress_shirt/dress_shirt_PNG8117.png'
-		},
-		{
-			name: 'Socks',
-			category: 'clothing',
-			price: 12.0,
-			inStock: 10,
-			image: 'https://www.pngfind.com/pngs/m/14-143267_socks-png-background-image-sock-transparent-png.png'
-		},
-		{
-			name: 'Apples',
-			category: 'food',
-			price: 0.99,
-			inStock: 500,
-			image: 'https://e1.pngegg.com/pngimages/23/306/png-clipart-new-s-two-red-apples-thumbnail.png'
-		},
-		{
-			name: 'Eggs',
-			category: 'food',
-			price: 1.99,
-			inStock: 12,
-			image:
-				'https://w7.pngwing.com/pngs/439/922/png-transparent-chicken-egg-yolk-egg-eggshell-broken-egg-easter-eggs.png'
-		},
-		{
-			name: 'Bread',
-			category: 'food',
-			price: 2.39,
-			inStock: 90,
-			image: 'https://toppng.com/uploads/preview/bread-png-image-loaf-of-bread-11563103187ssm8yazedr.png'
-		}
-	],
+	products: [],
 	prodectsDepCatogry: []
 };
-
+const api = 'http://api-js401.herokuapp.com/api/v1/products';
 //Reducer
 // eslint-disable-next-line import/no-anonymous-default-export
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -67,7 +18,7 @@ export default (state = initialState, action) => {
 	switch (type) {
 		case 'CHANGE':
 			let catorgyName = payload;
-			prodectsDepCatogry = initialState.products.filter((product) => {
+			prodectsDepCatogry = state.products.filter((product) => {
 				if (product.category === catorgyName) {
 					return product;
 				}
@@ -75,17 +26,17 @@ export default (state = initialState, action) => {
 			// console.log('nn', catorgyName, prodectsDepCatogry);
 			// console.log('DISPLAY PRODS', productsToDisplay);
 			return { ...state, prodectsDepCatogry };
+		case 'GETT':
+			state.products = payload;
+
+			return { ...state };
 		case 'DEC':
-			let catorgyName2 = payload;
-			let prod = initialState.products.filter((product) => {
-				if (product.name === catorgyName2) {
-					product.inStock--;
+			console.log('bbhhb', payload, state);
+			prodectsDepCatogry = state.products.filter((product) => {
+				if (product.name === payload.name) {
+					product.inStock = payload.inStock;
 					return product;
-				}
-			});
-			console.log('bbb', prod);
-			prodectsDepCatogry = initialState.products.filter((product) => {
-				if (product.category === prod[0].category) {
+				} else if (product.category === payload.category && product.name !== payload.name) {
 					return product;
 				}
 			});
@@ -110,5 +61,51 @@ export const decremenr = (name) => {
 	return {
 		type: 'DEC',
 		payload: name
+	};
+};
+export const updateproducteData = (id) => {
+	return (dispatch) => {
+		return superagent.get(`${api}/${id}`).then((response) => {
+			// Delay this action by one second
+			console.log('updaterr', response);
+			dispatch(updateproducteData2(response.body));
+		});
+	};
+};
+export const updateproducteData2 = (update) => {
+	let up = update;
+	return (dispatch) => {
+		console.log('update', up);
+		return superagent.put(`${api}/${update._id}`).send({ inStock: `${update.inStock - 1} ` }).then((response) => {
+			// Delay this action by one second
+			console.log('responsekk', response);
+			dispatch(getAction2(response.body));
+		});
+	};
+};
+
+const getAction2 = (payload) => {
+	console.log('paaa', payload);
+	return {
+		type: 'DEC',
+		payload: payload
+	};
+};
+
+export const getproducteData = () => {
+	return (dispatch) => {
+		return superagent.get(api).then((response) => {
+			// Delay this action by one second
+
+			dispatch(getAction1(response.body.results));
+		});
+	};
+};
+
+const getAction1 = (payload) => {
+	console.log('paaa', payload);
+	return {
+		type: 'GETT',
+		payload: payload
 	};
 };

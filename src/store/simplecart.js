@@ -1,60 +1,68 @@
+import superagent from 'superagent';
+
 const initialState = {
 	products: [
 		{
+			_id: '5f1a5f861910080017657ed7',
 			name: 'TV',
 			category: 'electronics',
-			price: 699.0,
-			inStock: 5,
-			image: 'https://cdn.pixabay.com/photo/2018/12/22/03/27/smart-tv-3889141_960_720.png'
+			inStock: 4,
+			price: 699,
+			__v: 0
 		},
 		{
-			name: 'Radio',
+			_id: '5f1a51f71910080017657ed3',
+			name: 'Monitor',
 			category: 'electronics',
-			price: 99.0,
-			inStock: 15,
-			image: 'https://pluspng.com/img-png/radio-hd-png-radio-picture-png-image-500.png'
+			inStock: 983,
+			price: 100.99,
+			__v: 0
 		},
 		{
-			name: 'Shirt',
-			category: 'clothing',
-			price: 9.0,
-			inStock: 25,
-			image: 'https://pngimg.com/uploads/dress_shirt/dress_shirt_PNG8117.png'
+			_id: '5f1a51ff1910080017657ed4',
+			name: 'Mouse',
+			category: 'electronics',
+			inStock: 984,
+			price: 100.99,
+			__v: 0
 		},
 		{
-			name: 'Socks',
-			category: 'clothing',
-			price: 12.0,
-			inStock: 10,
-			image: 'https://www.pngfind.com/pngs/m/14-143267_socks-png-background-image-sock-transparent-png.png'
+			_id: '5f1a5faf1910080017657ed8',
+			name: 'Calzones',
+			category: 'food',
+			inStock: 985,
+			price: 100.1,
+			__v: 0
 		},
 		{
+			_id: '5f1a51f01910080017657ed2',
+			name: '1TB USB',
+			category: 'electronics',
+			inStock: 979,
+			price: 100.99,
+			__v: 0
+		},
+		{
+			_id: '5f1a5f761910080017657ed6',
 			name: 'Apples',
 			category: 'food',
-			price: 0.99,
-			inStock: 500,
-			image: 'https://e1.pngegg.com/pngimages/23/306/png-clipart-new-s-two-red-apples-thumbnail.png'
+			inStock: 940,
+			price: 100.1,
+			__v: 0
 		},
 		{
-			name: 'Eggs',
-			category: 'food',
-			price: 1.99,
-			inStock: 12,
-			image:
-				'https://w7.pngwing.com/pngs/439/922/png-transparent-chicken-egg-yolk-egg-eggshell-broken-egg-easter-eggs.png'
-		},
-		{
-			name: 'Bread',
-			category: 'food',
-			price: 2.39,
-			inStock: 90,
-			image: 'https://toppng.com/uploads/preview/bread-png-image-loaf-of-bread-11563103187ssm8yazedr.png'
+			_id: '5f1a52031910080017657ed5',
+			name: 'Keyboard',
+			category: 'electronics',
+			inStock: 992,
+			price: 100.99,
+			__v: 0
 		}
 	],
 	cartLists: [],
 	count: 0
 };
-
+const api = 'http://api-js401.herokuapp.com/api/v1/products';
 //Reducer
 // eslint-disable-next-line import/no-anonymous-default-export
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -67,16 +75,12 @@ export default (state = initialState, action) => {
 
 	switch (type) {
 		case 'ADD':
-			let productName = payload;
+			// let productName = payload;
 			count = state.count + 1;
+			console.log('maleeeeegrrk', state, payload);
 
-			let cartLists = initialState.products.filter((product) => {
-				console.log('vvvvb', product.name === productName && !state.cartLists.includes(product));
-				if (product.name === productName && !state.cartLists.includes(product)) {
-					product.inStock--;
-					return product;
-				}
-			});
+			let cartLists = [];
+			cartLists.push(payload);
 
 			state.cartLists.forEach((element) => {
 				cartLists.push(element);
@@ -91,10 +95,27 @@ export default (state = initialState, action) => {
 	}
 };
 
-export const addtocart = (name) => {
-	console.log('vvv', name);
+// export const addtocart = (name) => {
+// 	console.log('vvv', name);
+// 	return {
+// 		type: 'ADD',
+// 		payload: name
+// 	};
+// };
+export const getRemoteData3 = (id) => {
+	return (dispatch) => {
+		return superagent.get(`${api}/${id}`).then((response) => {
+			// Delay this action by one second
+
+			dispatch(getAction3(response.body));
+		});
+	};
+};
+
+const getAction3 = (payload) => {
+	console.log('paaa', payload);
 	return {
 		type: 'ADD',
-		payload: name
+		payload: payload
 	};
 };
